@@ -1,21 +1,17 @@
 from bs4 import BeautifulSoup
+from selenium.webdriver.common.by import By
 from urllib.parse import urljoin, urlparse
 
 class Parser:
     def __init__(self, base_url=None):
         self.base_url = base_url
 
-    def extract_links(self, html, current_url):
-        """Extract all valid http(s) links from the HTML."""
-        
-        soup = BeautifulSoup(html, 'html.parser')
+    def extract_links_selenium(self, driver):
         links = set()
-        for a_tag in soup.find_all('a', href=True):
-            href = urljoin(current_url, a_tag['href'])
-            parsed = urlparse(href)
-            if parsed.scheme in ['http', 'https']:
+        for elem in driver.find_elements(By.TAG_NAME, "a"):
+            href = elem.get_attribute("href")
+            if href and href.startswith("http"):
                 links.add(href)
-        
         return links
     
     

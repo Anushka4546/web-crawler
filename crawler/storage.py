@@ -2,7 +2,7 @@ import csv
 import threading
 
 class Storage:
-    def __init___(self):
+    def __init__(self):
         self.data = []
         self.lock = threading.Lock()
 
